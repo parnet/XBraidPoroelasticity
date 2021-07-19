@@ -62,7 +62,7 @@ namespace ug {
 
             static const double m_PI;
 
-            static const double X0;
+            static const double X0; //change carefully  for %4 == 0
             static const double Y0;
 
         };
@@ -72,9 +72,9 @@ namespace ug {
         public:
             BarryMercerData() : a(1.0), b(1.0), tchar(1.0) {}
 
-            BarryMercerData(double tchar_, double lamdda_, double mu_)
+            BarryMercerData(double tchar_, double lambda_, double mu_)
                     : a(1.0), b(1.0), tchar(tchar_),
-                      lambda(lamdda_), mu(mu_) {}
+                      lambda(lambda_), mu(mu_) {}
 
             double a;
             double b;
@@ -98,7 +98,9 @@ namespace ug {
 
             //! Define eval function.
             inline void evaluate(number &p, const MathVector<2> &x, number time, int si) const {
-                p = m_nonDimData.Pressure2D(x[0] / m_dimData.a, x[1] / m_dimData.b, time / m_dimData.tchar);// todo * /
+                p = m_nonDimData.Pressure2D(x[0] / m_dimData.a,
+                                               x[1] / m_dimData.b,
+                                               time / m_dimData.tchar);//
                 p *= (m_dimData.lambda + 2.0 * m_dimData.mu);
             }
 
@@ -121,7 +123,9 @@ namespace ug {
 
             //! Define eval function.
             inline void evaluate(number &p, const MathVector<2> &x, number time, int si) const {
-                p = m_nonDimData.VelX2D(x[0] / m_dimData.a, x[1] / m_dimData.b, time / m_dimData.tchar); // todo * /
+                p = m_nonDimData.VelX2D(x[0] / m_dimData.a,
+                                           x[1] / m_dimData.b,
+                                           time / m_dimData.tchar);
             }
 
         protected:
@@ -142,7 +146,9 @@ namespace ug {
 
             //! Define eval function.
             inline void evaluate(number &p, const MathVector<2> &x, number time, int si) const {
-                p = m_nonDimData.VelY2D(x[0] / m_dimData.a, x[1] / m_dimData.b, time / m_dimData.tchar); // todo * /
+                p = m_nonDimData.VelY2D(x[0] / m_dimData.a,
+                                        x[1] / m_dimData.b,
+                                        time / m_dimData.tchar);
             }
 
         protected:
@@ -164,9 +170,9 @@ namespace ug {
 
             //! Define eval function.
             inline void evaluate(number &val, const MathVector<2> &x, number time, int si) const {
-                double beta_ = get_beta(); // kappa * (lambda + 2* mu)
-                val = 2.0 * beta_ * sin(beta_ *
-                                        time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
+                double beta_ = get_beta(); // kappa * (lambda + 2* mu) (consolidation)
+                val =  1.0 * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
+                std::cout << "point_source_val: " << val;
             }
 
             inline double get_beta() const { return m_beta; }
@@ -362,14 +368,10 @@ namespace ug {
 
                 base_type::m_params.resize(1);
                 base_type::m_params[0] = BiotSubsetParameters("INNER", alpha, kappa / muf, 0.0, lambda, mu, beta_uzawa);
-
-
             }
 
 
             virtual ~BarryMercerProblem() {
-                //	m_pointSourceDisc = SPNULL;
-                //	m_spDirichlet = SPNULL;
             }
 
 
@@ -434,8 +436,7 @@ namespace ug {
 
             /// Inverse of consolidation coefficient.
             double get_beta() const {
-                return base_type::m_params[0].get_kappa() *
-                       (base_type::m_params[0].get_lambda() + 2 * base_type::m_params[0].get_mu());
+                return base_type::m_params[0].get_kappa() *(base_type::m_params[0].get_lambda() + 2 * base_type::m_params[0].get_mu());
             }
 
         public:

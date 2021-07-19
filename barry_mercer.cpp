@@ -33,129 +33,103 @@
 #include "barry_mercer.h"
 
 namespace ug {
-namespace Poroelasticity{
+    namespace Poroelasticity {
 
 
+        const double BarryMercerNondimensional::X0 = 0.25;
+        const double BarryMercerNondimensional::Y0 = 0.25;
+        const double BarryMercerNondimensional::m_PI = ug::PI;
 
-const double BarryMercerNondimensional::X0 = 0.25;
-const double BarryMercerNondimensional::Y0 = 0.25;
-const double BarryMercerNondimensional::m_PI = ug::PI;
-size_t BarryMercerNondimensional::NAPPROX = 64;
+        size_t BarryMercerNondimensional::NAPPROX = 64;
 
 
 //! Computes coefficient from Eq. (24) in Barry & Mercer, ACME, 1999 (for $\omega=1)
-double BarryMercerNondimensional::FourierCoeff_P(int n, int q, double t_hat) const
-{
- //  double beta = BARRY_MERCER_DATA.BETA
-  double x0= X0;
-  double y0= Y0;
+        double BarryMercerNondimensional::FourierCoeff_P(int n, int q, double t_hat) const {
+            double coeff_factor = 4.0;
+            //  double beta = BARRY_MERCER_DATA.BETA
+            double x0 = X0;
+            double y0 = Y0;
 
-  if ((n%4==0) || (q%4==0)) { return 0.0; }
+            if ((n % 4 == 0) || (q % 4 == 0)) { return 0.0; }
 
-  double lambda_n = n*m_PI;
-  double lambda_q = q*m_PI;
-  double _lambda_nq = lambda_n*lambda_n + lambda_q*lambda_q;
+            double lambda_n = n * m_PI;
+            double lambda_q = q * m_PI;
+            double _lambda_nq = lambda_n * lambda_n + lambda_q * lambda_q;
 
-  double val1 = -2.0* sin(lambda_n*x0) * sin(lambda_q*y0);
-  double val2 = (_lambda_nq*sin(t_hat) - cos(t_hat) + exp(-_lambda_nq*t_hat));
-  double val3 = (1 + _lambda_nq*_lambda_nq);
+            double val1 = - coeff_factor * sin(lambda_n * x0) * sin(lambda_q * y0);
+            double val2 = (_lambda_nq * sin(t_hat) - cos(t_hat) + exp(-_lambda_nq * t_hat));
+            double val3 = (1 + _lambda_nq * _lambda_nq);
 
-  return (val1*val2)/val3;
-}
+            return (val1 * val2) / val3;
+        }
 
 
 //! double t_hat = m_beta*t;
 
 /*! Pressure is normalized and should be multiplied by (BARRY_MERCER_DATA.LAMBDA+2.0*BARRY_MERCER_DATA.MU) */
-double BarryMercerNondimensional::Pressure2D(double x, double y, double t_hat) const
-{
+        double BarryMercerNondimensional::Pressure2D(double x, double y, double t_hat) const {
+            int N = NAPPROX;
+            double pp = 0.0;
+            for (int m = 2; m <= N; ++m) {
+                for (int n = 1; n <= m - 1; ++n) {
+                    int q = m - n;
 
-  int N = NAPPROX;
+                    double sinnx = sin(m_PI * n * x);
+                    double sinqy = sin(m_PI * q * y);
+                    double _coeff_nq = FourierCoeff_P(n, q, t_hat);
+                    pp += _coeff_nq * sinnx * sinqy;
+                }
+            }
+            return -4.0 * pp;
+        }
 
-  double x0 = X0;
-  double y0= Y0;
+        double BarryMercerNondimensional::VelX2D(double x, double y, double t_hat) const {
+            int N = NAPPROX;
+            double u = 0.0;
+            for (int m = 2; m <= N; ++m) {
+                for (int n = 1; n <= m - 1; ++n) {
+                    int q = m - n;
 
-  double sinbt = sin(t_hat);
-  double cosbt = cos(t_hat);
+                    double _lambda_n = m_PI * n;
+                    double _lambda_q = m_PI * q;
+                    double _lambda_nq = (m_PI * m_PI) * (n * n + q * q);
 
-  double pp = 0.0;
+                    double _coskx = cos(_lambda_n * x) ;
+                    double _sinqy = sin(_lambda_q * y);
 
-   for (int m=2; m<=N ; ++m) {
-      for (int k=1; k <= m-1; ++k) {
+                    double _coeff_kq = FourierCoeff_P(n, q, t_hat);
 
-    	  double lambda_k = k*m_PI;
-    	  double sinkx = sin(m_PI*k*x);
+                    u += _coeff_kq * _coskx * _sinqy  * _lambda_n/ _lambda_nq;
+                }
+            }
+
+            return 4.0 * u;
+        }
 
 
-    	  int q = m-k;
-    	  double lambda_q = q*m_PI;
-    	  double sinqy = sin(m_PI*q*y);
+        double BarryMercerNondimensional::VelY2D(double x, double y, double t_hat) const {
+            int N = NAPPROX;
+            double u = 0.0;
+            for (int m = 2; m <= N; ++m) {
+                for (int n = 1; n <= m - 1; ++n) {
+                    int q = m - n;
+                    double _lambda_q = m_PI * q;
+                    double _lambda_n = m_PI * n;
+                    double _lambda_nq = (m_PI * m_PI) * (n * n + q * q);
 
-    	  double _coeff_kq = FourierCoeff_P(k,q, t_hat);
-       //-- print ("x= ("..x..", "..y.."\tn="..n.."q="..q..",m="..m.."), c=".._coeff_nq.."\t"..sinnx.."\t"..sinqy.."=> \tpp="..pp.."\tupdate=".._coeff_nq * sinnx * sinqy)
-    	  pp += _coeff_kq * sinkx * sinqy;
+                    double _cosqy = cos(_lambda_q * y) ;
+                    double _sinnx = sin(_lambda_n * x);
+
+                    double _coeff_nq = FourierCoeff_P(n, q, t_hat);
+                    u += _coeff_nq * _sinnx * _cosqy * _lambda_q / _lambda_nq;
+                }
+            }
+
+            return 4.0 * u;
+        }
+
     }
-   // -- print("break: "..sinnx)
-    }
-//  -- print ("x= ("..t..","..t_hat..","..x..","..y..")"..pp)
-  return -4.0*pp;
 }
-
-double BarryMercerNondimensional::VelX2D(double x, double y, double t_hat) const
-{
-
-	int N = NAPPROX;
-//	double t_hat = BARRY_MERCER_DATA.BETA*t;
-
-	double u = 0.0;
-
-	for (int m=2; m<=N; ++m) {
-		for (int k=1; k<=m-1; ++k) {
-
-
-			//int n=k;
-			double _lambda_k = m_PI*k;
-			double _coskx = cos(_lambda_k*x)*_lambda_k;
-
-			//-- for q=1,N do
-			int q = m-k;
-			double _lambda_kq = (m_PI*m_PI)*(k*k+ q*q);
-			double _coeff_kq = FourierCoeff_P(k,q, t_hat);
-			// -- < print ("x= ("..x..","..y..","..n..","..q.."), coeff="..(_coeff_nq/_lambda_nq)..", u="..u)
-			u += _coeff_kq * _coskx * sin(m_PI*q*y)/_lambda_kq;
-		}
-	}
-
-	return 4.0*u;
-}
-
-
-// local t_hat = m_beta*t;
-double BarryMercerNondimensional::VelY2D(double x, double y, double t_hat) const
-{
-
-	int N = NAPPROX;
-	double u = 0.0;
-
-	for (int m=2; m<=N; ++m) {
-		for (int k=1; k<=m-1; ++k) {
-				//-- for q=1,N do
-			int q = m-k;
-			double _cosqx = cos(m_PI*q*y)*m_PI*q;
-				//  -- for n=1,N do
-			double _lambda_kq = (m_PI*m_PI)*(k*k+ q*q);
-        	double _coeff_kq = FourierCoeff_P(k,q, t_hat);
-				//  --  print ("x= ("..x..","..y..")"..pp..", c=".._coeff_nq)
-			u += _coeff_kq * sin(m_PI*k*x)*_cosqx/_lambda_kq;
-		}
-	}
-
-	return 4.0*u;
-}
-
-}
-}
-
 
 
 

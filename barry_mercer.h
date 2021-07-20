@@ -57,13 +57,14 @@ namespace ug {
 
             static size_t NAPPROX;
 
-        protected:
+        public:
             double FourierCoeff_P(int n, int q, double t_norm) const;
 
             static const double m_PI;
 
             static const double X0; //change carefully  for %4 == 0
             static const double Y0;
+            static double source_strength;
 
         };
 
@@ -164,6 +165,7 @@ namespace ug {
             //! Export base type
             typedef StdGlobPosData<BarryMercerPointSource, number, 2, void> pos_data_type;
 
+            double source_strength = BarryMercerNondimensional::source_strength;
             //! CTOR
             BarryMercerPointSource(const double consolidation)
                     : m_nonDimData(), m_beta(consolidation) {}
@@ -171,7 +173,7 @@ namespace ug {
             //! Define eval function.
             inline void evaluate(number &val, const MathVector<2> &x, number time, int si) const {
                 double beta_ = get_beta(); // kappa * (lambda + 2* mu) (consolidation)
-                val =  1.0 * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
+                val =  source_strength * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
                 std::cout << "point_source_val: " << val;
             }
 

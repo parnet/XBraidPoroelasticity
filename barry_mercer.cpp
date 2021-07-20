@@ -40,12 +40,14 @@ namespace ug {
         const double BarryMercerNondimensional::Y0 = 0.25;
         const double BarryMercerNondimensional::m_PI = ug::PI;
 
+        double BarryMercerNondimensional::source_strength = 2.0;
         size_t BarryMercerNondimensional::NAPPROX = 64;
 
 
 //! Computes coefficient from Eq. (24) in Barry & Mercer, ACME, 1999 (for $\omega=1)
         double BarryMercerNondimensional::FourierCoeff_P(int n, int q, double t_hat) const {
-            double coeff_factor = 1.0;
+
+            double coeff_factor = source_strength;
             //  double beta = BARRY_MERCER_DATA.BETA
             double x0 = X0;
             double y0 = Y0;
@@ -99,7 +101,7 @@ namespace ug {
 
                     double _coeff_kq = FourierCoeff_P(n, q, t_hat);
 
-                    u += _coeff_kq * _coskx * _sinqy  * _lambda_n/ _lambda_nq;
+                    u += 2.0 * _coeff_kq * _coskx * _sinqy  * _lambda_n/ _lambda_nq;
                 }
             }
 
@@ -121,7 +123,7 @@ namespace ug {
                     double _sinnx = sin(_lambda_n * x);
 
                     double _coeff_nq = FourierCoeff_P(n, q, t_hat);
-                    u += _coeff_nq * _sinnx * _cosqy * _lambda_q / _lambda_nq;
+                    u += 2.0 * _coeff_nq * _sinnx * _cosqy * _lambda_q / _lambda_nq;
                 }
             }
 

@@ -45,7 +45,7 @@ namespace ug {
 
 //! Computes coefficient from Eq. (24) in Barry & Mercer, ACME, 1999 (for $\omega=1)
         double BarryMercerNondimensional::FourierCoeff_P(int n, int q, double t_hat) const {
-            double coeff_factor = 4.0;
+            double coeff_factor = 1.0;
             //  double beta = BARRY_MERCER_DATA.BETA
             double x0 = X0;
             double y0 = Y0;

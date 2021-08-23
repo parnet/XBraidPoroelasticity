@@ -15,6 +15,7 @@
  * (2) The following notice must be displayed at a prominent place in the
  * terminal output of covered works: "Based on UG4 (www.ug4.org/license)".
  *
+ *
  * (3) The following bibliography is recommended for citation and must be
  * preserved in all covered files:
  * "Reiter, S., Vogel, A., Heppner, I., Rupp, M., and Wittum, G. A massively
@@ -72,7 +73,7 @@ double BesselJ1(double x);
 struct BiotDiscConfig
 {
 	BiotDiscConfig(const char* uCmp, const char *pCmp)
-	: m_uCmp(uCmp), m_pCmp(pCmp), m_uOrder(2), m_pOrder(1), m_dStab(0.0), m_bSteadyStateMechanics(true)
+	: m_uCmp(uCmp), m_pCmp(pCmp), m_uOrder(1), m_pOrder(1), m_dStab(0.0), m_bSteadyStateMechanics(true)
 	{}
 
 	BiotDiscConfig(const char* uCmp, int uorder, const char *pCmp, int porder)
@@ -264,8 +265,8 @@ public:
 				if (uorder == 1) {
 				    // displacementEqDisc->set_quad_order(2);
 				} else if (uorder == 2) {
+                    flowEqDisc->set_quad_order(3);
 				    displacementEqDisc->set_quad_order(5);
-				    flowEqDisc->set_quad_order(3);
 				}
 			}
 
@@ -433,7 +434,7 @@ protected:
 		SmartPtr<TElemDisc> pDiscStab;
 		std::vector<BiotSubsetParameters>::iterator it;
 		for(it = m_params.begin(); it != m_params.end(); it++) {
-			double gamma = it->get_lambda() + 2.0*it->get_mu();
+			double gamma = it->get_lambda() + 2.0*it->get_mu(); //
 		  	pDiscStab = make_sp(new TConvectionDiffusionStab(config().m_pCmp.c_str(), it->get_subsets().c_str(), config().m_dStab/gamma));
 		  	dd->add(pDiscStab.template cast_dynamic<TElemDisc>());
 		}
@@ -457,21 +458,19 @@ public:
 	}
 
 	//! This add all boundary conditions.
-	virtual void add_boundary_conditions(SmartPtr<TDomainDisc> dd, bool bSteadyStateMechanics=true)
-	{}
+	virtual void add_boundary_conditions(SmartPtr<TDomainDisc> dd, bool bSteadyStateMechanics=true){}
 
 	//! Initial values
-	virtual void interpolate_start_values(SmartPtr<TGridFunction> u, double t0)
-	{}
+	virtual void interpolate_start_values(SmartPtr<TGridFunction> u, double t0){}
 
 	//! Post-processing (per time step)
 	virtual bool post_processing(SmartPtr<TGridFunction> u, size_t step, double time) {return true; }
 
 
 
-	const BiotDiscConfig& config() const { return m_config; }
-	int get_porder() const {return config().m_pOrder;}
-	int get_uorder() const {return config().m_uOrder;}
+	BiotDiscConfig& config() { return m_config; }
+	int get_porder() {return config().m_pOrder;}
+	int get_uorder() {return config().m_uOrder;}
 
 protected:
 	BiotDiscConfig m_config;

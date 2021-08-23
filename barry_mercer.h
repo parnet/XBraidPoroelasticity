@@ -364,9 +364,11 @@ namespace ug {
 
 
                 //double Kcomp = E/(3*(1-2*nu)); // compression (or bulk) modulus)
-                double Kv = 2.0 * E / (1 + nu) * (1.0 - nu) / (1.0 - 2.0 * nu); // uni-axial drained bulk modulus
+                // double Kv = 2.0 * E / (1 + nu) * (1.0 - nu) / (1.0 - 2.0 * nu); // uni-axial drained bulk modulus
+                double Kv =  E / (1 + nu) * (1.0 - nu) / (1.0 - 2.0 * nu); // uni-axial drained bulk modulus
 
-                double beta_uzawa = (alpha * alpha) / Kv * (2.0 - 2.0 * nu);
+                //double beta_uzawa = (alpha * alpha) / Kv * (1.0 - 1.0 * nu);
+                double beta_uzawa = (alpha * alpha) / (2*mu+2*lambda);
 
                 base_type::m_params.resize(1);
                 base_type::m_params[0] = BiotSubsetParameters("INNER", alpha, kappa / muf, 0.0, lambda, mu, beta_uzawa);
@@ -449,6 +451,15 @@ namespace ug {
         public:
             void set_napprox(int approx = 512){
                 this->m_errData.napprox = approx;
+            }
+
+            void set_stab(double stab = 0.0){
+                base_type::config().set_stabilization(stab);
+            }
+
+            void set_order(int uorder, int porder){
+                base_type::config().m_uOrder = uorder;
+                base_type::config().m_pOrder = porder;
             }
             // SmartPtr<typename TDirichletBoundary::base_type> m_spDirichlet;
         };

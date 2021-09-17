@@ -40,7 +40,7 @@ namespace ug {
         const double BarryMercerNondimensional::Y0 = 0.25;
         const double BarryMercerNondimensional::m_PI = ug::PI;
 
-        double BarryMercerNondimensional::source_strength = 2.0;
+        double BarryMercerNondimensional::source_strength = 1.0;
         size_t BarryMercerNondimensional::NAPPROX = 64;
 
 

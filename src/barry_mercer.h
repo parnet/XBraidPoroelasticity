@@ -299,7 +299,7 @@ namespace ug {
                 // Print solution.
 
                 vtk.print(file_ref.c_str(), *uref, step, time);
-                IOGridfunction<TDomain, TAlgebra> io = IOGridfunction<TDomain, TAlgebra>();
+                IOGridFunction<TDomain, TAlgebra> io = IOGridFunction<TDomain, TAlgebra>();
                 io.write(uref, gf_name);
 
                 // Compute norms.

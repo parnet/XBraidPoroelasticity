@@ -49,11 +49,11 @@
 
 
 // Plugin dependencies.
-#include "../ConvectionDiffusion/fe/convection_diffusion_fe.h"
-#include "../ConvectionDiffusion/fe/convection_diffusion_stab_fe.h"
-#include "../ConvectionDiffusion/fv1/convection_diffusion_fv1.h"
-#include "../SmallStrainMechanics/small_strain_mech.h"
-#include "../SmallStrainMechanics/material_laws/hooke.h"
+#include "../../ConvectionDiffusion/fe/convection_diffusion_fe.h"
+#include "../../ConvectionDiffusion/fe/convection_diffusion_stab_fe.h"
+#include "../../ConvectionDiffusion/fv1/convection_diffusion_fv1.h"
+#include "../../SmallStrainMechanics/small_strain_mech.h"
+#include "../../SmallStrainMechanics/material_laws/hooke.h"
 
 #define WITH_JSON
 #ifdef WITH_JSON

@@ -39,7 +39,7 @@
 # MESSAGE("###################################################### #### #### ugx")
 # Name of your plugin and sources.
 set(pluginName	Poroelasticity)
-set(SOURCES	biot_plugin.cpp biot_tools.cpp  barry_mercer.cpp)
+set(SOURCES src/biot_plugin.cpp src/biot_tools.cpp src/barry_mercer.cpp)
 include_directories(${UG_ROOT_PATH}/externals/JSONForUG4/json-cxx/include/)
 
 ################################################################################
@@ -73,5 +73,5 @@ else(buildEmbeddedPlugins)
 	link_directories(${UG_ROOT_PATH}/bin/plugins)
 	target_link_libraries (${pluginName} PRIVATE
 			#nlohmann_json::nlohmann_json
-			ug4 ConvectionDiffusion SmallStrainMechanics )
+			ug4 ConvectionDiffusion SmallStrainMechanics XBraidUtil)
 endif(buildEmbeddedPlugins)

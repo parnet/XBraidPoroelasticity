@@ -40,7 +40,7 @@
 
 #include "biot_tools.h"
 
-#include "../../../XBraidUtil/src/IOGridFunction.h"
+#include "../../XBraidUtil/src/IOGridFunction.h"
 
 namespace ug {
     namespace Poroelasticity {

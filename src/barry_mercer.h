@@ -187,7 +187,7 @@ namespace ug {
 
 
 //! Auxiliary class for compution errors as 'StdGlobPosData'.
-        template<class TGridFunction>
+        template<typename TAlgebra,typename TDomain, class TGridFunction>
         class BerryMercerErrorData {
 
             enum normTypes {
@@ -452,7 +452,7 @@ namespace ug {
         public:
             double m_a;
             double m_b;
-            BerryMercerErrorData<typename base_type::TGridFunction> m_errData;
+            BerryMercerErrorData<TAlgebra, TDomain, typename base_type::TGridFunction> m_errData;
 
         public:
             void set_napprox(int approx = 512){

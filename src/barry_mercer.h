@@ -300,7 +300,7 @@ namespace ug {
 
                 vtk.print(file_ref.c_str(), *uref, step, time);
                 IOGridFunction<TDomain, TAlgebra> io = IOGridFunction<TDomain, TAlgebra>();
-                io.write(uref, gf_name);
+                io.write(uref, gf_name.c_str());
 
                 // Compute norms.
                 ComputeNorms(u, m_normSol);

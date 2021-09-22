@@ -339,8 +339,6 @@ namespace ug {
                 UG_LOG ("deltaU2B:\t" << time << "\t" << time / charTime << "\t"
                                       << m_normErr[L2NORM_UY] << "\t" << m_normSol[L2NORM_UY] << "\t"
                                       << m_normRef[L2NORM_UY] << std::endl);
-
-
             }
 
         };

@@ -175,7 +175,7 @@ namespace ug {
             inline void evaluate(number &val, const MathVector<2> &x, number time, int si) const {
                 double beta_ = get_beta(); // kappa * (lambda + 2* mu) (consolidation)
                 val =  source_strength * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
-                std::cout << "point_source_val: " << val;
+                //std::cout << "point_source_val: " << val;
             }
 
             inline double get_beta() const { return m_beta; }
@@ -356,14 +356,25 @@ namespace ug {
 
             BarryMercerProblem(const char *uCmp, const char *pCmp)
                     : base_type(uCmp, pCmp, "../grids/barrymercer2D-tri.ugx"), m_a(1.0), m_b(1.0) {
+                //double E = 1e+5; // Young's elasticity modulus [Pa]
+                //double nu = 0.4;        // Poisson"s ratio  [1]
+
+                //double lambda = (E * nu) / ((1.0 + nu) * (1.0 - 2.0 * nu));
+                //double mu = 0.5 * E / (1 + nu);
+
+                //double kappa = 1e-5;   // permeability [m*m]
+                //double muf = 1e-3;       // Pa*s    => Diff Coeff 1e-9
+                //double alpha = 1.0;
+
+
                 double E = 1e+5; // Young's elasticity modulus [Pa]
-                double nu = 0.4;        // Poisson"s ratio  [1]
+                double nu = 0.1;        // Poisson"s ratio  [1]
 
                 double lambda = (E * nu) / ((1.0 + nu) * (1.0 - 2.0 * nu));
                 double mu = 0.5 * E / (1 + nu);
 
                 double kappa = 1e-5;   // permeability [m*m]
-                double muf = 1e-3;       // Pa*s    => Diff Coeff 1e-9
+                double muf = 1.0;       // Pa*s    => Diff Coeff 1e-9
                 double alpha = 1.0;
 
 
@@ -434,8 +445,10 @@ namespace ug {
 
             /// Post-processing (per time step)
             bool post_processing(SmartPtr<typename base_type::TGridFunction> u, size_t step, double time) override {
-                BarryMercerData dimData(base_type::get_char_time(), base_type::m_params[0].get_lambda(),
+                BarryMercerData dimData(base_type::get_char_time(),
+                                        base_type::m_params[0].get_lambda(),
                                         base_type::m_params[0].get_mu());
+
                 m_errData.eval(dimData, *u, step, time);
                 return true;
             }

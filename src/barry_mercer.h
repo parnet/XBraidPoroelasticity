@@ -174,7 +174,7 @@ namespace ug {
             //! Define eval function.
             inline void evaluate(number &val, const MathVector<2> &x, number time, int si) const {
                 double beta_ = get_beta(); // kappa * (lambda + 2* mu) (consolidation)
-                val =  source_strength * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
+                val +=  source_strength * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
                 //std::cout << "point_source_val: " << val;
             }
 

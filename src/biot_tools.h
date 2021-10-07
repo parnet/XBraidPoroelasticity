@@ -242,7 +242,7 @@ public:
 
 			// Add divergence.
 			divLinker = make_sp(new TScaleAddLinkerNumber());
-			divLinker->add(param.get_alpha(), flowEqDisc->value());
+			divLinker->add(param.get_alpha()/2, flowEqDisc->value());  // todo div 2 ? why? !!!
 			displacementEqDisc->set_div_factor(divLinker);
 
 			// B) Specify flow eq (for p).

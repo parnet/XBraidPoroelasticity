@@ -311,7 +311,7 @@ namespace ug {
 
                 // Compute errors.
                 VecScaleAdd((typename TGridFunction::vector_type &) *uref, 1.0, *uref, -1.0, u);
-                vtk.print(file_err.c_str(), *uref, step, time);
+                //vtk.print(file_err.c_str(), *uref, step, time);
                 ComputeNorms(*uref, m_normErr);
 
                 UG_LOG ("SOLUTION/ERROR:" << std::endl);
@@ -356,18 +356,18 @@ namespace ug {
 
             BarryMercerProblem(const char *uCmp, const char *pCmp)
                     : base_type(uCmp, pCmp, "../grids/barrymercer2D-tri.ugx"), m_a(1.0), m_b(1.0) {
-                //double E = 1e+5; // Young's elasticity modulus [Pa]
-                //double nu = 0.4;        // Poisson"s ratio  [1]
-
-                //double lambda = (E * nu) / ((1.0 + nu) * (1.0 - 2.0 * nu));
-                //double mu = 0.5 * E / (1 + nu);
-
-                //double kappa = 1e-5;   // permeability [m*m]
-                //double muf = 1e-3;       // Pa*s    => Diff Coeff 1e-9
-                //double alpha = 1.0;
-
-
                 double E = 1e+5; // Young's elasticity modulus [Pa]
+                double nu = 0.4;        // Poisson"s ratio  [1]
+
+                double lambda = (E * nu) / ((1.0 + nu) * (1.0 - 2.0 * nu));
+                double mu = 0.5* E/(1+nu); // 0.5 * E / (1 + nu);
+
+                double kappa = 1e-5;   // permeability [m*m]
+                double muf = 1e-3;       // Pa*s    => Diff Coeff 1e-9
+                double alpha = 1.0;
+
+
+                /*double E = 1e+5; // Young's elasticity modulus [Pa]
                 double nu = 0.1;        // Poisson"s ratio  [1]
 
                 double lambda = (E * nu) / ((1.0 + nu) * (1.0 - 2.0 * nu));
@@ -375,12 +375,12 @@ namespace ug {
 
                 double kappa = 1e-5;   // permeability [m*m]
                 double muf = 1.0;       // Pa*s    => Diff Coeff 1e-9
-                double alpha = 1.0;
+                double alpha = 1.0;*/
 
 
                 //double Kcomp = E/(3*(1-2*nu)); // compression (or bulk) modulus)
                 // double Kv = 2.0 * E / (1 + nu) * (1.0 - nu) / (1.0 - 2.0 * nu); // uni-axial drained bulk modulus
-                double Kv =  E / (1 + nu) * (1.0 - nu) / (1.0 - 2.0 * nu); // uni-axial drained bulk modulus
+                //double Kv =  E / (1 + nu) * (1.0 - nu) / (1.0 - 2.0 * nu); // uni-axial drained bulk modulus
 
                 //double beta_uzawa = (alpha * alpha) / Kv * (1.0 - 1.0 * nu);
                 double beta_uzawa = (alpha * alpha) / (2*mu+2*lambda);

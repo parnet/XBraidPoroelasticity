@@ -102,7 +102,7 @@ namespace ug {
 
                     double _coeff_kq = FourierCoeff_P(n, q, t_hat);
 
-                    u += 2.0 * _coeff_kq * _coskx * _sinqy  * _lambda_n/ _lambda_nq;
+                    u +=  _coeff_kq * _coskx * _sinqy  * _lambda_n/ _lambda_nq;
                 }
             }
 
@@ -124,7 +124,7 @@ namespace ug {
                     double _sinnx = sin(_lambda_n * x);
 
                     double _coeff_nq = FourierCoeff_P(n, q, t_hat);
-                    u += 2.0 * _coeff_nq * _sinnx * _cosqy * _lambda_q / _lambda_nq;
+                    u += _coeff_nq * _sinnx * _cosqy * _lambda_q / _lambda_nq;
                 }
             }
 

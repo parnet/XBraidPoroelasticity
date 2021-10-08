@@ -33,16 +33,14 @@
 #include "biot_tools.h"
 
 namespace ug {
-namespace Poroelasticity {
+    namespace Poroelasticity {
 
 //! Bessel functions
-double BesselJ0(double x)
-{ return boost::math::cyl_bessel_j(0, x); }
+        double BesselJ0(double x) { return boost::math::cyl_bessel_j(0, x); }
 
-double BesselJ1(double x)
-{ return boost::math::cyl_bessel_j(1, x); }
+        double BesselJ1(double x) { return boost::math::cyl_bessel_j(1, x); }
 
-#ifdef WITH_JSON
+
 /**
 {
 	"subsets" = "subset1, subset2",
@@ -54,46 +52,42 @@ double BesselJ1(double x)
 	"beta" = 0.0,
 }
 */
-void to_json(nlohmann::json &j, const BiotSubsetParameters &p) {
-	j = nlohmann::json{
-		{"subsets", p.get_subsets()},
-		{"alpha",  p.get_alpha()},
-		{"kappa", p.get_kappa()},
-		{"phi", p.get_phi()},
-		{"lambda", p.get_lambda()},
-		{"mu", p.get_mu()},
-		{"beta", p.get_beta()}
-	};
-}
+        void to_json(nlohmann::json &j, const BiotSubsetParameters &p) {
+            j = nlohmann::json{
+                    {"subsets", p.get_subsets()},
+                    {"alpha",   p.get_alpha()},
+                    {"kappa",   p.get_kappa()},
+                    {"phi",     p.get_phi()},
+                    {"lambda",  p.get_lambda()},
+                    {"mu",      p.get_mu()},
+                    {"beta",    p.get_beta()}
+            };
+        }
 
-void from_json(const nlohmann::json &j, BiotSubsetParameters &p) {
-	p.set_subsets(j.at("subsets").get<std::string>());
-	p.set_alpha(j.at("alpha").get<number>());
-	j.at("kappa").get_to(p.m_kappa);
-	j.at("phi").get_to(p.m_phi);
-	j.at("lambda").get_to(p.m_lambda);
-	j.at("mu").get_to(p.m_mu);
-	j.at("beta").get_to(p.m_beta_uzawa);
-}
-#endif
+        void from_json(const nlohmann::json &j, BiotSubsetParameters &p) {
+            p.set_subsets(j.at("subsets").get<std::string>());
+            p.set_alpha(j.at("alpha").get<number>());
+            j.at("kappa").get_to(p.m_kappa);
+            j.at("phi").get_to(p.m_phi);
+            j.at("lambda").get_to(p.m_lambda);
+            j.at("mu").get_to(p.m_mu);
+            j.at("beta").get_to(p.m_beta_uzawa);
+        }
+
 
 /** Value: $ \frac{l^2}{\kappa (\lambda + 2* \mu)}$ */
-double DefaultCharTime(const BiotSubsetParameters& p, double length)
-{
-	nlohmann::json json;
-	to_json(json, p);
+        double DefaultCharTime(const BiotSubsetParameters &p, double length) {
+            nlohmann::json json;
+            to_json(json, p);
 
-	std::stringstream ss;
-	ss << json;
+            std::stringstream ss;
+            ss << json;
 
-	UG_LOG("JSON = "<< ss.str() << std::endl);
-	double consolidation = p.get_kappa()* (p.get_lambda() + 2*p.get_mu());
-	return (length*length)/consolidation;
-}
-
+            UG_LOG("JSON = " << ss.str() << std::endl);
+            double consolidation = p.get_kappa() * (p.get_lambda() + 2 * p.get_mu());
+            return (length * length) / consolidation;
+        }
 
 
-
-
-}
+    }
 }

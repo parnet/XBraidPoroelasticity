@@ -40,7 +40,7 @@
 
 #include "biot_tools.h"
 
-#include "../../XBraidUtil/src/IOGridFunction.h"
+#include "../../XBraidUtil/src/io_gridfunction.h"
 
 namespace ug {
     namespace Poroelasticity {
@@ -299,7 +299,7 @@ namespace ug {
                 // Print solution.
 
                 vtk.print(file_ref.c_str(), *uref, step, time);
-                IOGridFunction<TDomain, TAlgebra> io = IOGridFunction<TDomain, TAlgebra>();
+                ug::XBraidUtil::IOGridFunction<TDomain, TAlgebra> io = ug::XBraidUtil::IOGridFunction<TDomain, TAlgebra>();
                 io.write(uref, gf_name.c_str());
 
                 // Compute norms.

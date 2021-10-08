@@ -35,15 +35,11 @@
 
 namespace ug {
     namespace Poroelasticity {
-
-
         const double BarryMercerNondimensional::X0 = 0.25;
         const double BarryMercerNondimensional::Y0 = 0.25;
         const double BarryMercerNondimensional::m_PI = ug::PI;
-
         double BarryMercerNondimensional::source_strength = 2.0;
         size_t BarryMercerNondimensional::NAPPROX = 64;
-
 
 //! Computes coefficient from Eq. (24) in Barry & Mercer, ACME, 1999 (for $\omega=1)
         double BarryMercerNondimensional::FourierCoeff_P(int n, int q, double t_hat) const {
@@ -105,7 +101,6 @@ namespace ug {
                     u +=  _coeff_kq * _coskx * _sinqy  * _lambda_n/ _lambda_nq;
                 }
             }
-
             return 4.0 * u;
         }
 
@@ -127,10 +122,8 @@ namespace ug {
                     u += _coeff_nq * _sinnx * _cosqy * _lambda_q / _lambda_nq;
                 }
             }
-
             return 4.0 * u;
         }
-
     }
 }
 

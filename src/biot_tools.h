@@ -55,10 +55,8 @@
 #include "../../SmallStrainMechanics/small_strain_mech.h"
 #include "../../SmallStrainMechanics/material_laws/hooke.h"
 
-#define WITH_JSON
-#ifdef WITH_JSON
+
 #include <nlohmann/json.hpp>
-#endif
 
 namespace ug {
 namespace Poroelasticity {
@@ -145,9 +143,8 @@ public:
 	number get_beta() const { return m_beta_uzawa; }
 	void set_beta(number beta) { m_beta_uzawa = beta; }
 
-#ifdef WITH_JSON
 	friend void from_json(const nlohmann::json& j, BiotSubsetParameters& p);
-#endif
+
 
 protected:
 	std::string m_subsets;
@@ -162,10 +159,9 @@ protected:
 	number m_beta_uzawa;
 };
 
-#ifdef WITH_JSON
 void to_json(nlohmann::json &j, const BiotSubsetParameters &p);
 void from_json(const nlohmann::json &j, BiotSubsetParameters &p);
-#endif
+
 
 
 

@@ -43,7 +43,7 @@
 #include "../../XBraidUtil/src/io_gridfunction.h"
 
 namespace ug {
-    namespace Poroelasticity {
+    namespace XBraidPoroelasticity {
 
 
 //! Non-dimensional solution.

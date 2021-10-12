@@ -38,7 +38,7 @@
 # MESSAGE("###################################################### #### #### ugx")
 # MESSAGE("###################################################### #### #### ugx")
 # Name of your plugin and sources.
-set(pluginName	Poroelasticity)
+set(pluginName	XBraidPoroelasticity)
 set(SOURCES src/biot_plugin.cpp src/biot_tools.cpp src/barry_mercer.cpp)
 include_directories(${UG_ROOT_PATH}/externals/JSONForUG4/json-cxx/include/)
 
@@ -55,7 +55,7 @@ project(UG_PLUGIN_${pluginName})
 # include the definitions and dependencies for ug-plugins.
 
 if(UG_ROOT_CMAKE_PATH)
-	MESSAGE("Poroelasticity UG Root was found")
+	MESSAGE("XBraidPoroelasticity UG Root was found")
 else(UG_ROOT_CMAKE_PATH)
 	set(UG_ROOT_CMAKE_PATH /pro/ug/ugcore/cmake)
 endif(UG_ROOT_CMAKE_PATH)

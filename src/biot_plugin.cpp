@@ -55,7 +55,7 @@ using namespace ug::bridge;
 #endif
 
 namespace ug{
-namespace Poroelasticity{
+namespace XBraidPoroelasticity{
 
 /** 
  *  \defgroup Poroelasticity Poroelasticity
@@ -309,17 +309,17 @@ struct FunctionalityFor2D
 // end group sample_plugin
 /// \}
 
-}// end of namespace Poroelasticity
+}// end of namespace XBraidPoroelasticity
 
 
 /**
  * This function is called when the plugin is loaded.
  */
 extern "C" void
-InitUGPlugin_Poroelasticity(Registry* reg, string grp)
+InitUGPlugin_XBraidPoroelasticity(Registry* reg, string grp)
 {
 	grp.append("/Poroelasticity");
-	typedef Poroelasticity::Functionality Functionality;
+	typedef XBraidPoroelasticity::Functionality Functionality;
 
 	try{
 		RegisterCommon<Functionality>(*reg,grp);
@@ -331,14 +331,14 @@ InitUGPlugin_Poroelasticity(Registry* reg, string grp)
 		// Register only for 2D/3D (cf. SmallStrainMechanics)
 		RegisterDomain2d3dDependent<Functionality>(*reg,grp);
 		RegisterDomain2d3dAlgebraDependent<Functionality>(*reg,grp);
-		RegisterDomain2dAlgebraDependent<Poroelasticity::FunctionalityFor2D>(*reg,grp);
+		RegisterDomain2dAlgebraDependent<XBraidPoroelasticity::FunctionalityFor2D>(*reg,grp);
 
 	}
 	UG_REGISTRY_CATCH_THROW(grp);
 }
 
 extern "C" UG_API void
-FinalizeUGPlugin_Poroelasticity()
+FinalizeUGPlugin_XBraidPoroelasticity()
 {
 }
 

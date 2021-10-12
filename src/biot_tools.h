@@ -59,7 +59,7 @@
 #include <nlohmann/json.hpp>
 
 namespace ug {
-namespace Poroelasticity {
+namespace XBraidPoroelasticity {
 
 //! Bessel functions
 double BesselJ0(double x);
@@ -238,7 +238,7 @@ public:
 
 			// Add divergence.
 			divLinker = make_sp(new TScaleAddLinkerNumber());
-			divLinker->add(param.get_alpha()/2, flowEqDisc->value());  // todo div 2 ? why? !!!
+			divLinker->add(param.get_alpha(), flowEqDisc->value());
 			displacementEqDisc->set_div_factor(divLinker);
 
 			// B) Specify flow eq (for p).

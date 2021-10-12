@@ -34,7 +34,7 @@
 
 
 namespace ug {
-    namespace Poroelasticity {
+    namespace XBraidPoroelasticity {
         const double BarryMercerNondimensional::X0 = 0.25;
         const double BarryMercerNondimensional::Y0 = 0.25;
         const double BarryMercerNondimensional::m_PI = ug::PI;

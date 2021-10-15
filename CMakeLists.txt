@@ -72,6 +72,5 @@ else(buildEmbeddedPlugins)
 
 	link_directories(${UG_ROOT_PATH}/bin/plugins)
 	target_link_libraries (${pluginName} PRIVATE
-			#nlohmann_json::nlohmann_json
 			ug4 ConvectionDiffusion SmallStrainMechanics XBraidUtil)
 endif(buildEmbeddedPlugins)

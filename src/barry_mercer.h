@@ -40,7 +40,7 @@
 
 #include "biot_tools.h"
 
-#include "../../XBraidUtil/src/io_gridfunction.h"
+#include "../../XBraidUtil/src/parallel_io_gridfunction.h"
 
 namespace ug {
     namespace XBraidPoroelasticity {
@@ -253,7 +253,7 @@ namespace ug {
                 std::string file_ref = "BarryMercer2D_Ref.vtu";
                 std::string file_err = "BarryMercer2D_Err.vtu";
 
-                std::string gf_name = "BarryMercer2D_" + std::to_string(step)+".gridfunction";
+                std::string gf_name = "BarryMercer2D_" + std::to_string(step);
 
                 BarryMercerNondimensional::NAPPROX = this->napprox;
 
@@ -299,7 +299,7 @@ namespace ug {
                 // Print solution.
 
                 vtk.print(file_ref.c_str(), *uref, step, time);
-                ug::XBraidUtil::IOGridFunction<TDomain, TAlgebra> io = ug::XBraidUtil::IOGridFunction<TDomain, TAlgebra>();
+                ug::XBraidUtil::PIOGridFunction<TDomain, TAlgebra> io = ug::XBraidUtil::PIOGridFunction<TDomain, TAlgebra>();
                 io.write(uref, gf_name.c_str());
 
                 // Compute norms.

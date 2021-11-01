@@ -297,6 +297,7 @@ struct FunctionalityFor2D
 			    .add_method("set_napprox",&T::set_napprox)
 			    .add_method("set_stab",&T::set_stab)
 			    .add_method("set_order",&T::set_order)
+			    .add_method("set_source_scaling",&T::set_source_scaling)
 			 //  .add_method("add_uzawa_discs", &T::add_stab_discs)
 			 //  .add_method("add_boundary_conditions", static_cast<void (T::*)(SmartPtr<typename T::TDomainDisc>, bool)> (&T::add_boundary_conditions))
 			   .set_construct_as_smart_pointer(true);

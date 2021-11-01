@@ -168,8 +168,8 @@ namespace ug {
 
             double source_strength = BarryMercerNondimensional::source_strength;
             //! CTOR
-            BarryMercerPointSource(const double consolidation)
-                    : m_nonDimData(), m_beta(consolidation) {}
+            BarryMercerPointSource(const double consolidation,double scaling)
+                    : m_nonDimData(), m_beta(consolidation),source_strength(scaling) {}
 
             //! Define eval function.
             inline void evaluate(number &val, const MathVector<2> &x, number time, int si) const {
@@ -177,6 +177,7 @@ namespace ug {
                 val +=  source_strength * beta_ * sin(beta_ * time); //  time // 2 * kappa * (lambda + 2* mu) *sin(  kappa * (lambda + 2* mu) * time)
                 //std::cout << "point_source_val: " << val;
             }
+
 
             inline double get_beta() const { return m_beta; }
 
@@ -354,6 +355,12 @@ namespace ug {
             typedef DiracSourceDisc<TDomain> TDiracSourceDisc;
             typedef DirichletBoundary<TDomain, TAlgebra> TDirichletBoundary;
 
+            double source_scaling = 2.0;
+
+            void set_source_scaling(double scaling){
+                this->source_scaling = scaling;
+            }
+
             BarryMercerProblem(const char *uCmp, const char *pCmp)
                     : base_type(uCmp, pCmp, "../grids/barrymercer2D-tri.ugx"), m_a(1.0), m_b(1.0) {
                 double E = 1e+5; // Young's elasticity modulus [Pa]
@@ -410,10 +417,12 @@ namespace ug {
                 SmartPtr<TDiracSourceDisc> m_pointSourceDisc;
                 m_pointSourceDisc = make_sp(new TDiracSourceDisc("p", "SINGULARITY"));
 
+
+
                 double beta = base_type::m_params[0].get_kappa() *
                               (base_type::m_params[0].get_lambda() + 2 * base_type::m_params[0].get_mu());
                 SmartPtr<BarryMercerPointSource::pos_data_type> m_pointSourceFunc;
-                m_pointSourceFunc = make_sp(new BarryMercerPointSource(beta));
+                m_pointSourceFunc = make_sp(new BarryMercerPointSource(beta,this->source_scaling));
 
                 MathVector<2> point(0.25, 0.25);// todo x0, y0 barry mercer data
                 m_pointSourceDisc->add_source(m_pointSourceFunc, point);

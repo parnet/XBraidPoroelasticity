@@ -36,9 +36,9 @@ namespace ug {
     namespace XBraidPoroelasticity {
 
 //! Bessel functions
-        double BesselJ0(double x) { return boost::math::cyl_bessel_j(0, x); }
+        //double BesselJ0(double x) { return boost::math::cyl_bessel_j(0, x); }
 
-        double BesselJ1(double x) { return boost::math::cyl_bessel_j(1, x); }
+        //double BesselJ1(double x) { return boost::math::cyl_bessel_j(1, x); }
 
 
 /**

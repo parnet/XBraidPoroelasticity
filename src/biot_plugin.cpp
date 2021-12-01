@@ -267,8 +267,8 @@ static void Common(Registry& reg, string grp)
 
 	{
 		// Bessel functions.
-		reg.add_function("BesselJ0", &BesselJ0, grp);
-		reg.add_function("BesselJ1", &BesselJ1, grp);
+		//reg.add_function("BesselJ0", &BesselJ0, grp);
+		//reg.add_function("BesselJ1", &BesselJ1, grp);
 	}
 }
 

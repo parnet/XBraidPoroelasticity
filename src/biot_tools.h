@@ -62,8 +62,8 @@ namespace ug {
 namespace XBraidPoroelasticity {
 
 //! Bessel functions
-double BesselJ0(double x);
-double BesselJ1(double x);
+//double BesselJ0(double x);
+//double BesselJ1(double x);
 
 
 

@@ -40,7 +40,7 @@
 #include <vector>
 
 // Boost
-//#include <boost/math/special_functions/bessel.hpp>
+#include <boost/math/special_functions/bessel.hpp>
 
 // UG4 dependencies.
 #include "lib_disc/spatial_disc/domain_disc.h"
@@ -62,8 +62,8 @@ namespace ug {
 namespace XBraidPoroelasticity {
 
 //! Bessel functions
-//double BesselJ0(double x);
-//double BesselJ1(double x);
+double BesselJ0(double x);
+double BesselJ1(double x);
 
 
 
